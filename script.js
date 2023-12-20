@@ -6,6 +6,8 @@ async function sendM(api_key) {
   }
 }
 
+let ref = undefined;
+
 function submit() {
   sendM(document.getElementById("api").value);
 }
@@ -24,22 +26,38 @@ chrome.runtime.onMessage.addListener(
     }
 );
 
+chrome.storage.sync.get(["status"]).then(async (result) => {
+    console.log(await result.status)
+    if(await result.status != undefined){
+        let message = document.getElementById("status");
+        message.innerText = await result.status;
+        
+        document.body.appendChild(message);
+    }
+    else{
+        if(document.getElementById("status")!=undefined){
+            document.body.removeChild(document.getElementById("status"))
+        }    
+    }
+})
 
-window.onload = ()=>{
+
+async function reload(){
     chrome.storage.sync.get(["status"]).then(async (result) => {
-        console.log(result.status)
-        if(result.status != undefined){
-            let message = document.createElement("h1");
-            message.innerText = result.status;
-            message.id = "status"
-            document.body.appendChild(message);
+        console.log(await result.status)
+        if(await result.status != undefined){
+            let message = document.getElementById("status");
+            message.innerText = await result.status;
+            
         }
-        else{
-            if(document.getElementById("status")!=undefined){
-                document.body.removeChild(document.getElementById("status"))
-            }    
-        }
+        
     })
-    console.log("hello")
 }
+
+function refresh(){
+    reload();
+
+}
+
+document.getElementById("refresh").addEventListener("click",refresh)
 
