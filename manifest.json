@@ -1,0 +1,19 @@
+
+{
+    "name": "VirusTotal Scanner",
+    "description": "Test",
+    "version": "1.0",
+    "manifest_version": 3,
+    "background":{
+        "service_worker": "background.js"
+    },
+
+    "action": {
+        "default_popup": "index.html"
+    },
+    "permissions": [
+        "downloads",
+        "storage"
+    ],
+    "host_permissions": ["https://www.virustotal.com/*"]
+}
